@@ -8,6 +8,7 @@
   const MANIFEST = window.FLAG_MANIFEST || [];
 
   // ---- DOM refs ---------------------------------------------------------
+  const boardEl = document.getElementById("board");
   const flagLayer = document.getElementById("flag-layer");
   const tilesEl = document.getElementById("tiles");
   const guessForm = document.getElementById("guess-form");
@@ -94,10 +95,59 @@
 
     revealedCountEl.textContent = "0";
 
-    flagLayer.innerHTML = `<img src="${current.src}" alt="" draggable="false" />`;
+    loadFlag(current.src);
 
     buildTiles();
     guessInput.focus({ preventScroll: true });
+  }
+
+  // ---- Flag sizing ----------------------------------------------------
+  function loadFlag(src) {
+    const img = new Image();
+    img.alt = "";
+    img.draggable = false;
+
+    img.addEventListener("load", () => {
+      getIntrinsicRatio(src, img).then((ratio) => {
+        applyBoardRatio(ratio);
+      });
+    });
+
+    flagLayer.innerHTML = "";
+    flagLayer.appendChild(img);
+    img.src = src;
+  }
+
+  function applyBoardRatio(ratio) {
+    if (!ratio || !isFinite(ratio) || ratio <= 0) ratio = 3 / 2;
+    boardEl.style.setProperty("--flag-ratio", String(ratio));
+  }
+
+  async function getIntrinsicRatio(src, imgEl) {
+    if (imgEl.naturalWidth > 0 && imgEl.naturalHeight > 0) {
+      return imgEl.naturalWidth / imgEl.naturalHeight;
+    }
+    if (/\.svg($|\?)/i.test(src)) {
+      try {
+        const res = await fetch(src);
+        const text = await res.text();
+        const doc = new DOMParser().parseFromString(text, "image/svg+xml");
+        const svg = doc.documentElement;
+        const viewBox = svg.getAttribute("viewBox");
+        if (viewBox) {
+          const parts = viewBox.trim().split(/[\s,]+/).map(Number);
+          if (parts.length === 4 && parts[2] > 0 && parts[3] > 0) {
+            return parts[2] / parts[3];
+          }
+        }
+        const w = parseFloat(svg.getAttribute("width"));
+        const h = parseFloat(svg.getAttribute("height"));
+        if (w > 0 && h > 0) return w / h;
+      } catch (err) {
+        // network or parse failure — fall through to default ratio
+      }
+    }
+    return 3 / 2;
   }
 
   function buildTiles() {
