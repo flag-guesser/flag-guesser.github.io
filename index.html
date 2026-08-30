@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Flag Guesser — Guess the Flag</title>
+  <meta name="description" content="Guess the flag before all six tiles lift." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.3/confetti.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/7.0.0/fuse.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="chart-texture" aria-hidden="true"></div>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <h1 class="wordmark">Flag <span>Guesser</span></h1>
+    <p class="tagline">Each guess flips a tile</p>
+  </div>
+</header>
+
+<main class="stage">
+
+  <section class="board-wrap">
+    <div class="board-frame">
+      <div class="board" id="board">
+        <div class="flag-layer" id="flag-layer"></div>
+        <div class="tiles" id="tiles"></div>
+      </div>
+    </div>
+
+    <div class="board-caption" id="board-caption">
+      <span class="reveal-count"><strong id="revealed-count">0</strong>/6 tiles lifted</span>
+    </div>
+  </section>
+
+  <section class="control-deck">
+    <form id="guess-form" class="guess-form" autocomplete="off">
+      <div class="input-wrap">
+        <input
+          type="text"
+          id="guess-input"
+          name="guess"
+          placeholder="Type a country…"
+          aria-label="Guess the country"
+          autocomplete="off"
+          autocapitalize="words"
+          spellcheck="false"
+        />
+        <ul class="suggestions" id="suggestions" role="listbox" hidden></ul>
+      </div>
+      <button type="submit" class="btn-guess" id="guess-btn">Guess</button>
+    </form>
+
+    <ol class="guess-log" id="guess-log" aria-label="Previous guesses"></ol>
+  </section>
+
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="assertive">
+  <p class="toast-message" id="toast-message"></p>
+  <button type="button" class="btn-newgame" id="new-game-btn" hidden>New game</button>
+</div>
+
+<script src="flags-manifest.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
