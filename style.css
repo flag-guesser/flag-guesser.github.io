@@ -128,14 +128,15 @@ body {
 
 .board-frame {
   position: relative;
-  display: block;
+  display: flex;
+  justify-content: center;
 }
 
 .board {
   position: relative;
   width: 100%;
+  max-width: var(--flag-max-width, 100%);
   aspect-ratio: var(--flag-ratio, 3 / 2);
-  max-height: 70vh;
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--line-600);
@@ -145,7 +146,7 @@ body {
   -webkit-mask-image: -webkit-radial-gradient(white, black);
   mask-image: -webkit-radial-gradient(white, black);
   isolation: isolate;
-  transition: aspect-ratio 0.25s ease;
+  transition: aspect-ratio 0.25s ease, max-width 0.25s ease;
 }
 
 .board::after {
@@ -371,6 +372,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+.toast-spacer {
+  height: 0;
+  flex-shrink: 0;
+  transition: height 0.25s ease;
 }
 
 .guess-log li {

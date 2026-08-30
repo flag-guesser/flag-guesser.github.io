@@ -20,6 +20,7 @@
   const toastEl = document.getElementById("toast");
   const toastMessageEl = document.getElementById("toast-message");
   const newGameBtn = document.getElementById("new-game-btn");
+  const toastSpacer = document.getElementById("toast-spacer");
 
   // ---- State --------------------------------------------------------------
   let pool = [];
@@ -118,9 +119,21 @@
     img.src = src;
   }
 
+  let currentFlagRatio = 3 / 2;
+
   function applyBoardRatio(ratio) {
     if (!ratio || !isFinite(ratio) || ratio <= 0) ratio = 3 / 2;
+    currentFlagRatio = ratio;
     boardEl.style.setProperty("--flag-ratio", String(ratio));
+
+    const maxHeight = window.innerHeight * 0.7;
+    const containerWidth = boardEl.parentElement.getBoundingClientRect().width;
+    const heightAtFullWidth = containerWidth / ratio;
+    if (heightAtFullWidth > maxHeight) {
+      boardEl.style.setProperty("--flag-max-width", `${Math.round(maxHeight * ratio)}px`);
+    } else {
+      boardEl.style.setProperty("--flag-max-width", "100%");
+    }
   }
 
   async function getIntrinsicRatio(src, imgEl) {
@@ -277,12 +290,23 @@
     toastEl.classList.toggle("is-wrong-final", !!isFinalWrong);
     toastEl.classList.remove("is-repeat");
     toastEl.classList.add("is-visible");
+    reserveSpaceForToast();
   }
 
   function hideToast() {
     clearTimeout(toastTimer);
     toastEl.classList.remove("is-visible", "is-wrong-final", "is-repeat");
     newGameBtn.hidden = true;
+    toastSpacer.style.height = "0px";
+  }
+
+  function reserveSpaceForToast() {
+    requestAnimationFrame(() => {
+      const height = toastEl.getBoundingClientRect().height;
+      toastSpacer.style.height = `${Math.ceil(height) + 16}px`;
+      const latest = guessLog.firstElementChild;
+      if (latest) latest.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    });
   }
 
   function fireConfetti() {
@@ -345,8 +369,10 @@
     toastMessageEl.innerHTML = `<strong>${escapeHtml(value)}</strong> isn't a flag in this deck — pick from the list.`;
     toastEl.classList.remove("is-wrong-final");
     toastEl.classList.add("is-visible", "is-repeat");
+    reserveSpaceForToast();
     toastTimer = setTimeout(() => {
       toastEl.classList.remove("is-visible", "is-repeat");
+      toastSpacer.style.height = "0px";
     }, 1800);
   }
 
@@ -361,8 +387,10 @@
     toastMessageEl.innerHTML = `Already guessed <strong>${name}</strong> — try another.`;
     toastEl.classList.remove("is-wrong-final");
     toastEl.classList.add("is-visible", "is-repeat");
+    reserveSpaceForToast();
     toastTimer = setTimeout(() => {
       toastEl.classList.remove("is-visible", "is-repeat");
+      toastSpacer.style.height = "0px";
     }, 1800);
   }
 
@@ -446,6 +474,12 @@
 
   document.addEventListener("click", (e) => {
     if (!guessForm.contains(e.target)) hideSuggestions();
+  });
+
+  let resizeTimer = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => applyBoardRatio(currentFlagRatio), 120);
   });
 
   // ---- Boot -----------------------------------------------------------------
