@@ -16,7 +16,7 @@
   const guessBtn = document.getElementById("guess-btn");
   const suggestionsEl = document.getElementById("suggestions");
   const guessLog = document.getElementById("guess-log");
-  const revealedCountEl = document.getElementById("revealed-count");
+  const guessesLeftEl = document.getElementById("guesses-left");
   const toastEl = document.getElementById("toast");
   const toastMessageEl = document.getElementById("toast-message");
   const newGameBtn = document.getElementById("new-game-btn");
@@ -94,13 +94,17 @@
     guessBtn.disabled = false;
     hideToast();
 
-    revealedCountEl.textContent = "0";
+    updateGuessesLeft();
 
     loadFlag(current.src);
 
     buildTiles();
     guessInput.focus({ preventScroll: true });
   }
+
+    function updateGuessesLeft() {
+      guessesLeftEl.textContent = String(6 - liftedCount);
+    }
 
   // ---- Flag sizing ----------------------------------------------------
   function loadFlag(src) {
@@ -186,7 +190,7 @@
     const tileEl = tilesEl.querySelector(`[data-index="${tileIndex}"]`);
     const shadeEl = tileEl ? tileEl.querySelector(".tile-shade") : null;
     liftedCount++;
-    revealedCountEl.textContent = String(liftedCount);
+    updateGuessesLeft();
 
     if (window.anime && tileEl) {
       anime({
@@ -244,7 +248,7 @@
       }
     }
     liftedCount = TILE_COUNT;
-    revealedCountEl.textContent = String(TILE_COUNT);
+    updateGuessesLeft();
   }
 
   function logGuess(text, status) {
