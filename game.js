@@ -267,11 +267,13 @@
     guessBtn.disabled = true;
     liftAllRemainingTiles();
 
+    const flagImgHtml = `<img src="${current.src}" alt="${current.name}" style="height: 32px; object-fit: cover; vertical-align: middle; margin-right: 10px; border-radius: 2px; border: 1px solid var(--brass);">`;
+
     if (won) {
-      showToast(`Correct — it was <strong>${current.name}</strong>.`, false);
+      showToast(`${flagImgHtml} Correct — it was <strong>${current.name}</strong>.`, false);
       fireConfetti();
     } else {
-      showToast(`It was <strong>${current.name}</strong>.`, true);
+      showToast(`${flagImgHtml} Out of guesses — it was <strong>${current.name}</strong>.`, true);
     }
 
     newGameBtn.hidden = false;
