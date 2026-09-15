@@ -2,7 +2,6 @@
   "use strict";
 
   const REVEAL_SECONDS = 5;
-  const CANVAS_RES = 480; // internal drawing resolution (before DPR scaling), long edge
 
   /** @type {{slug:string,name:string,src:string}[]} */
   const MANIFEST = window.FLAG_MANIFEST || [];
@@ -330,13 +329,24 @@
     const cssW = rect.width;
     const cssH = rect.height;
 
-    canvas.style.width = cssW + "px";
-    canvas.style.height = cssH + "px";
-    canvas.width = Math.round(cssW * dpr);
-    canvas.height = Math.round(cssH * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (cssW === 0 || cssH === 0) return;
 
-    redrawStrokes();
+    const targetW = Math.round(cssW * dpr);
+    const targetH = Math.round(cssH * dpr);
+
+    if (canvas.width !== targetW || canvas.height !== targetH) {
+      canvas.width = targetW;
+      canvas.height = targetH;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      redrawStrokes();
+    }
+  }
+
+  if (typeof ResizeObserver !== "undefined") {
+    const resizeObserver = new ResizeObserver(() => {
+      sizeCanvas();
+    });
+    resizeObserver.observe(boardEl);
   }
 
   // ---- Reveal countdown -----------------------------------------------------
@@ -367,6 +377,7 @@
     toolbar.hidden = false;
     submitBtn.hidden = false;
     drawStatus.textContent = "Draw it from memory";
+    sizeCanvas();
     clearCanvas();
   }
 
@@ -661,8 +672,8 @@
     submitBtn.disabled = true;
     submitBtn.textContent = "Scoring…";
 
-    const w = Math.round(canvas.width / dpr);
-    const h = Math.round(canvas.height / dpr);
+    const w = canvas.width;
+    const h = canvas.height;
 
     try {
       const refCanvas = await rasterizeReference(current.src, w, h);
