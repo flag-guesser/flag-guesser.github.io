@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Flag Guesser</title>
-  <meta name="description" content="Guess the flag before all six tiles lift." />
+  <title>Flag Guesser — Choices</title>
+  <meta name="description" content="Guess the flag from four options." />
 
   <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png?v=20260901" sizes="96x96" />
   <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg?v=20260901" />
@@ -14,9 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.3/confetti.browser.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/7.0.0/fuse.min.js"></script>
 
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -27,11 +25,11 @@
 <header class="masthead">
   <div class="masthead-inner">
     <h1 class="wordmark">Flag <span>Guesser</span></h1>
-    <p class="tagline">Can you identify the correct flag?</p>
+    <p class="tagline">Pick the correct flag from four options.</p>
     <nav class="game-nav">
-      <span class="game-nav-link is-active">Tiles</span>
+      <a href="index.html" class="game-nav-link">Tiles</a>
       <a href="colors.html" class="game-nav-link">Colours</a>
-      <a href="choices.html" class="game-nav-link">Choices</a>
+      <span class="game-nav-link is-active">Choices</span>
     </nav>
   </div>
 </header>
@@ -40,48 +38,28 @@
 
   <section class="board-wrap">
     <div class="board-frame">
-      <div class="board" id="board">
+      <div class="board board--choices" id="board">
         <div class="flag-layer" id="flag-layer"></div>
-        <div class="tiles" id="tiles"></div>
       </div>
     </div>
 
-    <div class="board-caption" id="board-caption">
-      <span class="guesses-left"><strong id="guesses-left">5</strong> guesses left</span>
+    <div class="board-caption">
+      <span class="guesses-left"><strong id="round-score">0</strong> correct · <strong id="round-total">0</strong> played</span>
     </div>
   </section>
 
   <section class="control-deck">
-    <form id="guess-form" class="guess-form" autocomplete="off">
-      <div class="input-wrap">
-        <input
-          type="text"
-          id="guess-input"
-          name="guess"
-          placeholder="Type a country…"
-          aria-label="Guess the country"
-          autocomplete="off"
-          autocapitalize="words"
-          spellcheck="false"
-        />
-        <ul class="suggestions" id="suggestions" role="listbox" hidden></ul>
-      </div>
-      <button type="submit" class="btn-guess" id="guess-btn">Guess</button>
-    </form>
-
-    <ol class="guess-log" id="guess-log" aria-label="Previous guesses"></ol>
+    <div class="choice-grid" id="choice-grid"></div>
   </section>
-
-  <div class="toast-spacer" id="toast-spacer" aria-hidden="true"></div>
 
 </main>
 
 <div class="toast" id="toast" role="status" aria-live="assertive">
   <p class="toast-message" id="toast-message"></p>
-  <button type="button" class="btn-newgame" id="new-game-btn" hidden>New game</button>
+  <button type="button" class="btn-newgame" id="next-btn" hidden>New Game</button>
 </div>
 
 <script src="flags-manifest.js"></script>
-<script src="tiles-game.js"></script>
+<script src="choices-game.js"></script>
 </body>
 </html>
