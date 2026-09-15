@@ -662,20 +662,20 @@ body {
 }
 
 .trace-line {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--parchment-dim);
   text-align: center;
   max-width: 32ch;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .trace-line .swatch {
   display: inline-block;
-  width: 9px;
-  height: 9px;
-  border-radius: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
   border: 1px solid rgba(240, 230, 210, 0.25);
-  margin-right: 4px;
+  margin-right: 5px;
   vertical-align: middle;
 }
 
