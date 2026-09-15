@@ -76,7 +76,7 @@
   }
 
   function applyBoardRatio(ratio) {
-    if (!ratio || !isFinite(ratio) || ratio <= 0) ratio = 3 / 2;
+    if (!ratio || !Number.isFinite(ratio) || ratio <= 0) ratio = 3 / 2;
     currentFlagRatio = ratio;
     boardEl.style.setProperty("--flag-ratio", String(ratio));
 
@@ -107,8 +107,8 @@
             return parts[2] / parts[3];
           }
         }
-        const w = parseFloat(svg.getAttribute("width"));
-        const h = parseFloat(svg.getAttribute("height"));
+        const w = Number.parseFloat(svg.getAttribute("width"));
+        const h = Number.parseFloat(svg.getAttribute("height"));
         if (w > 0 && h > 0) return w / h;
       } catch (err) {
         // network or parse failure — fall through to default ratio

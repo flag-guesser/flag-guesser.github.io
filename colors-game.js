@@ -100,7 +100,7 @@
       const canvas = document.createElement("canvas");
 
       let ratio = img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : 3 / 2;
-      if (!isFinite(ratio) || ratio <= 0) ratio = 3 / 2;
+      if (!Number.isFinite(ratio) || ratio <= 0) ratio = 3 / 2;
 
       let dw = SAMPLE_SIZE;
       let dh = SAMPLE_SIZE;
@@ -176,7 +176,7 @@
   }
 
   function hexToRgb(hex) {
-    const n = parseInt(hex.slice(1), 16);
+    const n = Number.parseInt(hex.slice(1), 16);
     return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
   }
 
