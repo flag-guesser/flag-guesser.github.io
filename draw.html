@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Flag Guesser — Draw</title>
+  <meta name="description" content="Study a flag, then draw it from memory." />
+
+  <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png?v=20260901" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg?v=20260901" />
+  <link rel="shortcut icon" href="/favicon/favicon.ico?v=20260901" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.3/confetti.browser.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="chart-texture" aria-hidden="true"></div>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <h1 class="wordmark">Flag <span>Guesser</span></h1>
+    <p class="tagline">Can you identify the correct flag?</p>
+    <nav class="game-nav">
+      <a href="index.html" class="game-nav-link">Tiles</a>
+      <a href="colors.html" class="game-nav-link">Colours</a>
+      <a href="choices.html" class="game-nav-link">Choices</a>
+      <span class="game-nav-link is-active">Draw</span>
+    </nav>
+  </div>
+</header>
+
+<main class="stage">
+
+  <section class="board-wrap">
+    <div class="board-frame">
+      <div class="board board--draw" id="board">
+        <div class="flag-layer" id="flag-layer" hidden></div>
+        <canvas id="draw-canvas" class="draw-canvas"></canvas>
+        <div class="reveal-overlay" id="reveal-overlay">
+          <span class="reveal-count" id="reveal-count">5</span>
+        </div>
+        <div class="score-overlay" id="score-overlay" hidden>
+          <div class="score-overlay-inner">
+            <span class="score-big" id="score-big">0%</span>
+            <span class="score-caption" id="score-caption">Match to the real flag</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="board-caption">
+      <span class="draw-status" id="draw-status">Get ready…</span>
+      <span class="score-tally"><strong id="round-score">0</strong> avg score · <strong id="round-total">0</strong> played</span>
+    </div>
+  </section>
+
+  <section class="control-deck">
+    <div class="draw-toolbar" id="draw-toolbar" hidden>
+      <div class="toolbar-row top-row">
+        <div class="swatch-row" id="swatch-row" role="group" aria-label="Colour"></div>
+        <div class="color-picker-row">
+          <input type="color" id="color-picker" class="color-picker" value="#f0e6d2" aria-label="Custom colour" />
+          <button type="button" class="tool-btn icon-btn" id="eyedropper-btn" title="Eyedropper (Pick colour)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 7l6 6"></path>
+              <path d="M12.5 8.5L15 6a2.12 2.12 0 0 1 3 3l-2.5 2.5"></path>
+              <path d="M12.5 8.5L8 13l-2.5 3.5L3 21l4.5-2.5L11 16l4.5-4.5"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="tool-buttons" id="tool-mode-buttons">
+          <button type="button" class="tool-btn is-active" id="tool-brush" title="Brush">Brush</button>
+          <button type="button" class="tool-btn" id="tool-rect" title="Rectangle">Rect</button>
+          <button type="button" class="tool-btn" id="tool-circle" title="Circle">Circle</button>
+          <button type="button" class="tool-btn" id="tool-star" title="Star">Star</button>
+          <button type="button" class="tool-btn" id="tool-fill" title="Fill">Fill</button>
+        </div>
+      </div>
+
+      <div class="toolbar-row controls-row">
+        <div class="brush-row">
+          <label for="brush-size" class="brush-label">Brush</label>
+          <input type="range" id="brush-size" class="brush-size" min="2" max="60" value="8" />
+        </div>
+        <div class="action-buttons">
+          <button type="button" class="tool-btn" id="undo-btn" title="Undo">Undo</button>
+          <button type="button" class="tool-btn" id="clear-btn" title="Clear canvas">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn-guess btn-submit-drawing" id="submit-drawing-btn" hidden>Reveal & compare</button>
+  </section>
+
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="assertive">
+  <p class="toast-message" id="toast-message"></p>
+  <button type="button" class="btn-newgame" id="next-btn" hidden>New game</button>
+</div>
+
+<script src="flags-manifest.js"></script>
+<script src="draw-game.js"></script>
+</body>
+</html>
