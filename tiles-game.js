@@ -21,6 +21,8 @@
   const toastMessageEl = document.getElementById("toast-message");
   const newGameBtn = document.getElementById("new-game-btn");
   const toastSpacer = document.getElementById("toast-spacer");
+  const roundScoreEl = document.getElementById("round-score");
+  const roundTotalEl = document.getElementById("round-total");
 
   // ---- State --------------------------------------------------------------
   let pool = [];
@@ -32,6 +34,8 @@
   let activeSuggestionIndex = -1;
   let toastTimer = null;
   let guessedSlugs = new Set(); // slugs already tried this round
+  let score = 0;
+  let played = 0;
 
   // ---- Setup: fuzzy matcher over the manifest ----------------------------
   function initFuse() {
@@ -104,6 +108,11 @@
 
     function updateGuessesLeft() {
       guessesLeftEl.textContent = String(6 - liftedCount);
+    }
+
+    function updateScoreline() {
+      if (roundScoreEl) roundScoreEl.textContent = String(score);
+      if (roundTotalEl) roundTotalEl.textContent = String(played);
     }
 
   // ---- Flag sizing ----------------------------------------------------
@@ -270,6 +279,10 @@
     guessInput.disabled = true;
     guessBtn.disabled = true;
     liftAllRemainingTiles();
+
+    played++;
+    if (won) score++;
+    updateScoreline();
 
     const flagImgHtml = `<img src="${current.src}" alt="${current.name}" style="height: 32px; object-fit: cover; vertical-align: middle; margin-right: 10px; border-radius: 2px; border: 1px solid var(--brass);">`;
 

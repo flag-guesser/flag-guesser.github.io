@@ -46,6 +46,7 @@
 
     <div class="board-caption" id="board-caption">
       <span class="guesses-left"><strong id="guesses-left">5</strong> guesses left</span>
+      <span class="score-tally"><strong id="round-score">0</strong> correct · <strong id="round-total">0</strong> played</span>
     </div>
   </section>
 
@@ -53,14 +54,14 @@
     <form id="guess-form" class="guess-form" autocomplete="off">
       <div class="input-wrap">
         <input
-            type="text"
-            id="guess-input"
-            name="guess"
-            placeholder="Type a country…"
-            aria-label="Guess the country"
-            autocomplete="off"
-            autocapitalize="words"
-            spellcheck="false"
+          type="text"
+          id="guess-input"
+          name="guess"
+          placeholder="Type a country…"
+          aria-label="Guess the country"
+          autocomplete="off"
+          autocapitalize="words"
+          spellcheck="false"
         />
         <ul class="suggestions" id="suggestions" role="listbox" hidden></ul>
       </div>

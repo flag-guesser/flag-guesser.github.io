@@ -271,7 +271,9 @@ body {
 .board-caption {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 8px;
   font-size: 12px;
   color: var(--sky-ink);
 }
@@ -283,6 +285,11 @@ body {
 
 .caption-sep {
   opacity: 0.5;
+}
+
+.score-tally {
+  margin-left: auto;
+  white-space: nowrap;
 }
 
 #hint-line {
@@ -566,6 +573,16 @@ body {
 
   .tile-coord {
     font-size: 9px;
+  }
+
+  .board-caption {
+    justify-content: flex-start;
+  }
+
+  .score-tally {
+    margin-left: 0;
+    width: 100%;
+    text-align: right;
   }
 
   .toast {
